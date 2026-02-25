@@ -4,18 +4,17 @@ import numpy as np
 from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics.pairwise import cosine_similarity
 
-# =====================================================
 # Page Config
-# =====================================================
+
 st.set_page_config(
     page_title="Tourism Recommendation System",
     page_icon="🌍",
     layout="wide"
 )
 
-# =====================================================
+
 # THEME SYSTEM
-# =====================================================
+
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
@@ -31,9 +30,9 @@ with col_toggle:
         )
         st.rerun()
 
-# =====================================================
+
 # THEME STYLING
-# =====================================================
+
 if st.session_state.theme == "dark":
     st.markdown("""
     <style>
@@ -144,9 +143,9 @@ else:
 st.markdown("Popular • Collaborative • Content-Based • Hybrid")
 st.divider()
 
-# =====================================================
+
 # Load Dataset
-# =====================================================
+
 @st.cache_data
 def load_data():
     return pd.read_csv("Tourism_Analysis_data.csv")
@@ -170,9 +169,9 @@ for col in categorical_cols:
 
 meta = df[['Attraction', 'Region', 'CityName', 'Country']].drop_duplicates()
 
-# =====================================================
+
 # KPI Dashboard
-# =====================================================
+
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Users", df["UserId"].nunique())
 col2.metric("Total Attractions", df["Attraction"].nunique())
@@ -181,9 +180,9 @@ col4.metric("Average Rating", round(df["Rating"].mean(), 2))
 
 st.divider()
 
-# =====================================================
+
 # Popular Recommendation
-# =====================================================
+
 def get_popular(df):
     popular = (
         df.groupby(['Attraction', 'Region', 'Country', 'CityName'])
@@ -204,9 +203,9 @@ def get_popular(df):
     popular.index += 1
     return popular
 
-# =====================================================
+
 # Build Models
-# =====================================================
+
 @st.cache_resource
 def build_models(df):
 
@@ -272,9 +271,9 @@ if "models" not in st.session_state:
 
 user_item, cf_scores, content_scores, hybrid_scores, item_similarity = st.session_state.models
 
-# =====================================================
+
 # Recommendation Function
-# =====================================================
+
 def recommend(user_id, model_type, top_k):
 
     if user_id not in user_item.index:
@@ -305,9 +304,9 @@ def recommend(user_id, model_type, top_k):
 
     return results.head(top_k)
 
-# =====================================================
+
 # Tabs
-# =====================================================
+
 tab1, tab2, tab3, tab4 = st.tabs([
     "🔥 Popular",
     "🤝 Collaborative",
