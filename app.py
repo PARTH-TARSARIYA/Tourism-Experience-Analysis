@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics.pairwise import cosine_similarity
+import os
 
 # Page Config
 
@@ -146,9 +147,12 @@ st.divider()
 
 # Load Dataset
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "Tourism_Analysis_data.csv")
+
 @st.cache_data
 def load_data():
-    return pd.read_csv("Tourism_Analysis_data.csv")
+    return pd.read_csv(DATA_PATH)
 
 df = load_data()
 
@@ -347,3 +351,4 @@ for tab, model_name in zip(
                 results = recommend(user_id, model_name, top_k)
 
                 st.table(results)
+
